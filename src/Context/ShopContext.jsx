@@ -39,7 +39,9 @@ const ShopContext = ({ children }) => {
   const removeCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] || 1) - 1 }));
   };
-
+  const removeToCard = (itemId) => {
+    setCartItems(products.filter((pro) => pro.id !== itemId));
+  };
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item in cartItems) {
@@ -69,6 +71,7 @@ const ShopContext = ({ children }) => {
     getTotalCartAmount,
     getTotalCartItems,
     cartItems,
+    removeToCard
   };
 
   return <Context.Provider value={contextVal}>{children}</Context.Provider>;

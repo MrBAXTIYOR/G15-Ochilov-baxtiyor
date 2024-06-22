@@ -3,7 +3,7 @@ import remove_icon from "../assets/cart_cross_icon.png";
 import { useContext } from "react";
 import { Context } from "../Context/ShopContext";
 const CardDetail = () => {
-  const { products, cartItems, removeCart, getTotalCartAmount } = useContext(Context);
+  const { products, cartItems, removeCart, getTotalCartAmount, addToCart, removeToCard } = useContext(Context);
   return (
     <div>
       <div className="carditems">
@@ -19,20 +19,23 @@ const CardDetail = () => {
 
         {products.map((e) => {
           if (cartItems[e.id] > 0) {
-            <div key={uuidv4()}>
-              <div className="cartitems-format cartitems-format-main">
-                <img src={e.image} alt="product name" className="carticon-product-icon" />
-                <p>{e.title}</p>
-                <p>${e.price}</p>
-                <button className="cartitems-quantity">
-                  <button> - </button>1<button> + </button>
-                </button>
-                <p>${e.price}</p>
-                <img src={remove_icon} className="cartitems-remove-icon" alt="" onClick={() => removeCart(e.id)} />
+            return (
+              <div key={uuidv4()}>
+                <div className="cartitems-format cartitems-format-main">
+                  <img src={e.image} alt="product name" className="carticon-product-icon" />
+                  <p>{e.title}</p>
+                  <p>${e.price}</p>
+                  <button className="cartitems-quantity">
+                    <button onClick={() => removeCart(e.id)}> - </button>
+                    {cartItems[e.id]}
+                    <button onClick={() => addToCart(e.id)}> + </button>
+                  </button>
+                  <p>${e.price * cartItems[e.id]} </p>
+                  <img src={remove_icon} className="cartitems-remove-icon" alt="" onClick={() => removeToCard(e.id)} />
+                </div>
+                <hr />
               </div>
-              ;
-              <hr />
-            </div>;
+            );
           }
         })}
 
@@ -47,7 +50,7 @@ const CardDetail = () => {
               <hr />
               <div className="cartitems-total-item">
                 <p>Shipping Fee</p>
-                <p>$1000dan oshsa bepul oshmasa $50 boladi</p>
+                <p>{getTotalCartAmount() > 1000 ? "free" : "$50"}</p>
               </div>
               <hr />
               <div className="cartitems-total-item">
